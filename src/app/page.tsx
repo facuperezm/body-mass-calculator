@@ -39,23 +39,25 @@ export default function Home() {
   }
 
   return (
-    <main className="text-gray-900 bg-teal-100 max-w-7xl">
+    <main className="max-w-6xl py-6 mx-auto text-gray-900 bg-gradient-to-r from-white to-teal-200">
       {/* logo */}
-      <header className="flex flex-col items-center justify-center py-2">
-        <div>
-          <h1>Body Mass Index Calculator</h1>
-          <p>
+      <header className="flex items-center justify-center py-2 md:flex-row">
+        <div className="">
+          <h1 className="text-6xl font-medium text-left">
+            Body Mass Index Calculator
+          </h1>
+          <p className="text-gray-600">
             Better understand your weight in relation to your height using our
             body mass index calculator. White BMI is not the sole determinant of
             healthy weight, it offers a valuable starting point to evaluate your
             overall health and well-being.
           </p>
         </div>
-        <div className="p-3 bg-white rounded-lg">
+        <div className="p-3 space-y-2 bg-white rounded-lg flex-">
           <p className="text-lg font-semibold text-gray-900">
             Enter your details below
           </p>
-          <form className="" onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <fieldset className="flex gap-3">
               <legend>Value</legend>
 
@@ -119,7 +121,7 @@ export default function Home() {
               </label>
             </div>
           </form>
-          <div className="p-2 text-white bg-blue-600 rounded-md">
+          <div className="p-2 text-white bg-blue-600 rounded-l-md">
             <p className="">Your BMI is...</p>
             <span className="text-5xl font-semibold ">
               {calculateBMI(measures.weight, measures.height)}
