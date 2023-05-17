@@ -9,18 +9,28 @@ const INITIAL_STATE = {
 export default function Home() {
   const [value, setValue] = React.useState("metric");
   const [measures, setMeasures] = React.useState(INITIAL_STATE);
-
+  const [bmi, setBMI] = React.useState<number | null>(null);
   function calculateBMI(weight: number, height: number) {
-    let bmi;
+    if (!height || !weight) {
+      setBMI(null);
+      return;
+    }
 
     if (value === "metric") {
       let heightInMeters = height / 100;
-      bmi = weight / (heightInMeters * heightInMeters);
+      if (isNaN(heightInMeters)) {
+        setBMI(null);
+      } else {
+        setBMI(weight / (heightInMeters * heightInMeters));
+      }
     } else {
       let heightInInches = height * 12;
-      bmi = (weight / (heightInInches * heightInInches)) * 703;
+      if (isNaN(heightInInches)) {
+        setBMI(null);
+      } else {
+        setBMI((weight / (heightInInches * heightInInches)) * 703);
+      }
     }
-    return bmi.toFixed(1);
   }
 
   function calculateIdealWeightRange(height: number) {
@@ -39,16 +49,16 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-6xl py-6 mx-auto text-gray-900 bg-gradient-to-r from-white to-teal-200">
+    <main className="max-w-6xl p-6 mx-auto text-gray-900 bg-gradient-to-r from-white to-teal-200 rounded-ee-3xl">
       {/* logo */}
       <header className="flex items-center justify-center py-2 md:flex-row">
         <div className="">
-          <h1 className="text-6xl font-medium text-left">
+          <h1 className="text-5xl font-semibold text-left">
             Body Mass Index Calculator
           </h1>
           <p className="text-gray-600">
             Better understand your weight in relation to your height using our
-            body mass index calculator. White BMI is not the sole determinant of
+            body mass index calculator. While BMI is not the sole determinant of
             healthy weight, it offers a valuable starting point to evaluate your
             overall health and well-being.
           </p>
@@ -57,7 +67,12 @@ export default function Home() {
           <p className="text-lg font-semibold text-gray-900">
             Enter your details below
           </p>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              calculateBMI(measures.weight, measures.height);
+            }}
+          >
             <fieldset className="flex gap-3">
               <legend>Value</legend>
 
@@ -93,13 +108,12 @@ export default function Home() {
                   id="height"
                   value={measures.height}
                   onChange={(event) => {
-                    setMeasures(
-                      (measures) =>
-                        ({
-                          ...measures,
-                          height: Number(event.target.value),
-                        } as typeof measures)
-                    );
+                    const newHeight = Number(event.target.value);
+                    setMeasures((measures) => ({
+                      ...measures,
+                      height: newHeight,
+                    }));
+                    calculateBMI(measures.weight, newHeight);
                   }}
                 />
               </label>
@@ -109,31 +123,54 @@ export default function Home() {
                   id="weight"
                   value={measures.weight}
                   onChange={(event) => {
-                    setMeasures(
-                      (measures) =>
-                        ({
-                          ...measures,
-                          weight: Number(event.target.value),
-                        } as typeof measures)
-                    );
+                    const newWeight = Number(event.target.value);
+                    setMeasures((measures) => ({
+                      ...measures,
+                      weight: newWeight,
+                    }));
+                    calculateBMI(newWeight, measures.height);
                   }}
                 />
               </label>
             </div>
+            <button type="submit">Calculate</button>
           </form>
-          <div className="p-2 text-white bg-blue-600 rounded-l-md">
-            <p className="">Your BMI is...</p>
-            <span className="text-5xl font-semibold ">
-              {calculateBMI(measures.weight, measures.height)}
-            </span>
-            <p className="">
-              Your BMI suggests you're a healthy. Your ideal weigth is between{" "}
-              {calculateIdealWeightRange(measures.height).map((weight) => (
-                <span key={weight} className="mr-2 font-semibold">
-                  {weight} kg
-                </span>
-              ))}
-            </p>
+          <div className="p-2 text-white bg-blue-600 rounded-r-[100px] rounded-l-lg">
+            {!bmi ? (
+              <>
+                <span className="flex font-bold">Welcome!</span>
+                <p className="text-sm">
+                  Enter your height and weight, then click "Calculate" to see
+                  your BMI result here.
+                </p>
+              </>
+            ) : (
+              <>
+                <div>
+                  <span>Your BMI is...</span>
+                  <span className="text-lg font-semibold ">
+                    {bmi.toFixed(1)}
+                  </span>
+                </div>
+                <div>
+                  <p>
+                    Your BMI suggests you&apos;re{" "}
+                    <span>
+                      {bmi < 18.5
+                        ? "underweight"
+                        : bmi < 24.9
+                        ? "normal weight"
+                        : bmi < 29.9
+                        ? "overweight"
+                        : "obese"}
+                    </span>
+                    . Your ideal weight is between{" "}
+                    {calculateIdealWeightRange(measures.height).join("kg and ")}
+                    kg
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </header>
