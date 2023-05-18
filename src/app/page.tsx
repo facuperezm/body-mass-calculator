@@ -80,6 +80,7 @@ export default function Home() {
                   type="radio"
                   id="metric"
                   value="metric"
+                  className="bg-white border rounded-full checked:ring-4 ring-blue-300 form-radio focus:ring-2 focus:ring-blue-300"
                   checked={value === "metric"}
                   onChange={(event) => {
                     setValue(event.target.value);
@@ -106,6 +107,7 @@ export default function Home() {
             <div className="flex flex-col gap-4">
               <label htmlFor="imperial" className="flex gap-2">
                 <input
+                  className="uppercase transition duration-150 ease-in-out bg-blue-600 shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"
                   type="radio"
                   id="imperial"
                   value="imperial"
