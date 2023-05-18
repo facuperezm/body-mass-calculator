@@ -63,48 +63,33 @@ export default function Home() {
             overall health and well-being.
           </p>
         </div>
-        <div className="p-3 space-y-2 bg-white rounded-lg flex-">
+        <div className="gap-3 p-6 space-y-6 bg-white rounded-lg min-w-max">
           <p className="text-lg font-semibold text-gray-900">
             Enter your details below
           </p>
           <form
+            className="flex gap-4"
             onSubmit={(e) => {
               e.preventDefault();
               calculateBMI(measures.weight, measures.height);
             }}
           >
-            <fieldset className="flex gap-3">
-              <legend>Value</legend>
-
-              <input
-                type="radio"
-                name=""
-                id="metric"
-                value="metric"
-                checked={value === "metric"}
-                onChange={(event) => {
-                  setValue(event.target.value);
-                }}
-              />
-              <label htmlFor="metric">Metric</label>
-              <br />
-
-              <input
-                type="radio"
-                name="agreed-to-terms"
-                id="imperial"
-                value="imperial"
-                checked={value === "imperial"}
-                onChange={(event) => {
-                  setValue(event.target.value);
-                }}
-              />
-              <label htmlFor="imperial">Imperial</label>
-            </fieldset>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
+              <label htmlFor="metric" className="flex gap-2">
+                <input
+                  type="radio"
+                  id="metric"
+                  value="metric"
+                  checked={value === "metric"}
+                  onChange={(event) => {
+                    setValue(event.target.value);
+                  }}
+                />
+                Metric
+              </label>
               <label htmlFor="height">
                 <input
-                  className="px-2 py-1 text-lg border border-gray-300 rounded-md"
+                  className="px-5 py-3 text-lg border border-gray-300 rounded-md"
                   id="height"
                   value={measures.height}
                   onChange={(event) => {
@@ -117,9 +102,24 @@ export default function Home() {
                   }}
                 />
               </label>
+            </div>
+            <div className="flex flex-col gap-4">
+              <label htmlFor="imperial" className="flex gap-2">
+                <input
+                  type="radio"
+                  id="imperial"
+                  value="imperial"
+                  checked={value === "imperial"}
+                  onChange={(event) => {
+                    setValue(event.target.value);
+                  }}
+                />
+                Imperial
+              </label>
               <label htmlFor="weight">
                 <input
-                  className="px-2 py-1 text-lg border border-gray-300 rounded-md"
+                  placeholder="kg"
+                  className="px-5 py-3 text-lg border border-gray-300 rounded-md"
                   id="weight"
                   value={measures.weight}
                   onChange={(event) => {
@@ -133,15 +133,15 @@ export default function Home() {
                 />
               </label>
             </div>
-            <button type="submit">Calculate</button>
           </form>
-          <div className="p-2 text-white bg-blue-600 rounded-r-[100px] rounded-l-lg">
+          <div className="p-6 text-white bg-gradient-to-r from-blue-600 to-blue-400 rounded-r-[100px] rounded-l-xl">
             {!bmi ? (
               <>
-                <span className="flex font-bold">Welcome!</span>
+                <span className="flex mb-2 text-xl font-semibold">
+                  Welcome!
+                </span>
                 <p className="text-sm">
-                  Enter your height and weight, then click "Calculate" to see
-                  your BMI result here.
+                  Enter your height and weight to see your BMI result here.
                 </p>
               </>
             ) : (
