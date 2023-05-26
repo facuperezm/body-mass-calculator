@@ -3,13 +3,14 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Health from "@/components/ui/healthy";
 import Box from "@/components/ui/boxes";
+import Link from "next/link";
 
 type Measures = {
-  height: number | undefined;
-  weight: number | undefined;
+  height?: number;
+  weight?: number;
 };
 
-const INITIAL_STATE = {
+const INITIAL_STATE: Measures = {
   height: undefined,
   weight: undefined,
 };
@@ -68,15 +69,12 @@ const boxesText = [
   },
 ];
 
-export default function Home() {
+export default function Home(): React.ReactNode {
   const [value, setValue] = React.useState("metric");
   const [measures, setMeasures] = React.useState<Measures>(INITIAL_STATE);
   const [bmi, setBMI] = React.useState<number | undefined>(undefined);
 
-  function calculateBMI(
-    weight: number | undefined,
-    height: number | undefined
-  ) {
+  const calculateBMI = (weight?: number, height?: number) => {
     if (!height || !weight) {
       setBMI(undefined);
       return;
@@ -97,9 +95,9 @@ export default function Home() {
         setBMI((weight / (heightInInches * heightInInches)) * 703);
       }
     }
-  }
+  };
 
-  function calculateIdealWeightRange(height: number | undefined) {
+  function calculateIdealWeightRange(height?: number): [string, string] {
     let lowerRange;
     let upperRange;
     if (value === "metric") {
@@ -115,11 +113,11 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-6xl p-6 mx-auto text-gray-900 bg-gradient-to-r from-white to-teal-200 rounded-ee-3xl">
+    <>
       <header className="flex flex-col items-center justify-center py-2 mb-4 md:flex-row">
         <div className="flex-1 mr-14 md:text-left md:flex md:flex-col">
           <img
-            className="mb-6"
+            className="mx-auto mb-6 md:mx-0"
             src="./logo.svg"
             alt=""
             width={50}
@@ -135,65 +133,66 @@ export default function Home() {
             overall health and well-being.
           </p>
         </div>
-        <div className="max-w-lg">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold text-gray-900">
-                Enter your details below
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form
-                className="flex flex-col gap-4 mb-6"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  calculateBMI(measures.weight, measures.height);
-                }}
-              >
-                <div className="flex flex-row justify-between ">
-                  <label
-                    htmlFor="metric"
-                    className="flex items-center gap-4 font-bold"
-                  >
-                    <input
-                      className="w-5 h-5"
-                      type="radio"
-                      id="metric"
-                      value="metric"
-                      checked={value === "metric"}
-                      onChange={(event) => {
-                        setValue(event.target.value);
-                      }}
-                    />
-                    Metric
-                  </label>
-                  <label
-                    htmlFor="imperial"
-                    className="flex items-center gap-4 font-bold"
-                  >
-                    <input
-                      className="w-5 h-5"
-                      type="radio"
-                      id="imperial"
-                      value="imperial"
-                      checked={value === "imperial"}
-                      onChange={(event) => {
-                        setValue(event.target.value);
-                      }}
-                    />
-                    Imperial
-                  </label>
-                </div>
-                <div className="">
-                  <label htmlFor="height" className="text-sm text-gray-500 ">
-                    Height
-                  </label>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-gray-900">
+              Enter your details below
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form
+              className="mb-6 space-y-4 "
+              onSubmit={(e) => {
+                e.preventDefault();
+                calculateBMI(measures.weight, measures.height);
+              }}
+            >
+              <div className="flex flex-row gap-4 justify-self-center">
+                <label
+                  htmlFor="metric"
+                  className="flex items-center flex-1 gap-4 font-semibold"
+                >
+                  <input
+                    className="w-5 h-5"
+                    type="radio"
+                    id="metric"
+                    value="metric"
+                    checked={value === "metric"}
+                    onChange={(event) => {
+                      setValue(event.target.value);
+                    }}
+                  />
+                  Metric
+                </label>
+                <label
+                  htmlFor="imperial"
+                  className="flex items-center flex-1 gap-4 font-semibold"
+                >
+                  <input
+                    className="w-5 h-5"
+                    type="radio"
+                    id="imperial"
+                    value="imperial"
+                    checked={value === "imperial"}
+                    onChange={(event) => {
+                      setValue(event.target.value);
+                    }}
+                  />
+                  Imperial
+                </label>
+              </div>
+              <div className="md:flex md:flex-row md:gap-4 md:w-full">
+                <label
+                  htmlFor="height"
+                  className="flex flex-col w-full text-sm text-gray-500"
+                >
+                  Height
                   <input
                     placeholder="cm"
                     type="number"
-                    className="px-4 py-2 pr-2 text-xl font-semibold text-gray-900 border border-gray-300 rounded-md placeholder:text-right placeholder:text-blue-700/50 placeholder:font-semibold"
+                    className="px-4 py-2 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md placeholder:text-right placeholder:text-blue-700/50 placeholder:font-semibold placeholder:-mr-2"
                     id="height"
-                    value={measures.height!}
+                    value={measures.height !== undefined ? measures.height : ""}
                     onChange={(event) => {
                       const newHeight = Number(event.target.value);
                       setMeasures((measures) => ({
@@ -203,15 +202,20 @@ export default function Home() {
                       calculateBMI(measures.weight, newHeight);
                     }}
                   />
-                  <label htmlFor="weight" className="text-sm text-gray-500 ">
-                    Weight
-                  </label>
+                </label>
+
+                <label
+                  htmlFor="weight"
+                  className="flex flex-col w-full text-sm text-gray-500"
+                >
+                  Weight
                   <input
                     placeholder="kg"
                     type="number"
                     id="weight"
-                    className="px-4 py-2 pr-2 text-xl font-semibold text-gray-900 border border-gray-300 rounded-md placeholder:text-right placeholder:text-blue-700/50 placeholder:font-semibold"
-                    value={measures.weight!}
+                    name="weight"
+                    className="px-4 py-2 text-lg font-semibold text-gray-900 border border-gray-300 rounded-md placeholder:text-right placeholder:text-blue-700/50 placeholder:font-semibold placeholder:-mr-2"
+                    value={measures.weight !== undefined ? measures.weight : ""}
                     onChange={(event) => {
                       const newWeight = Number(event.target.value);
                       setMeasures((measures) => ({
@@ -221,96 +225,77 @@ export default function Home() {
                       calculateBMI(newWeight, measures.height);
                     }}
                   />
-                </div>
-              </form>
-              <div className="p-6 text-white bg-gradient-to-r from-blue-600 to-blue-400 md:rounded-r-[100px] rounded-r-xl rounded-l-xl">
-                {!bmi ? (
-                  <>
-                    <span className="flex mb-2 text-xl font-semibold">
-                      Welcome!
-                    </span>
-                    <p className="text-sm">
-                      Enter your height and weight to see your BMI result here.
-                    </p>
-                  </>
-                ) : (
-                  <div className="flex items-center gap-4">
-                    <div className="">
-                      <span>Your BMI is... </span>
-                      <span className="text-xl font-semibold ">
-                        {bmi.toFixed(1)}
-                      </span>
-                    </div>
-                    <div className="whitespace-pre-line">
-                      <p className="text-sm">
-                        Your BMI suggests you&apos;re{" "}
-                        <span>
-                          {bmi < 18.5
-                            ? "underweight"
-                            : bmi < 24.9
-                            ? "normal weight"
-                            : bmi < 29.9
-                            ? "overweight"
-                            : "obese"}
-                        </span>
-                        . Your ideal weight is between{" "}
-                        {calculateIdealWeightRange(measures.height).join(
-                          "kg and "
-                        )}
-                        kg
-                      </p>
-                    </div>
-                  </div>
-                )}
+                </label>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </form>
+            <div className="p-6 text-white bg-gradient-to-r from-blue-600 to-blue-400 md:rounded-r-[100px] rounded-r-xl rounded-l-xl">
+              {!bmi ? (
+                <>
+                  <span className="flex mb-2 text-xl font-semibold">
+                    Welcome!
+                  </span>
+                  <p className="text-sm">
+                    Enter your height and weight to see your BMI result here.
+                  </p>
+                </>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <div>
+                    <span>Your BMI is... </span>
+                    <span className="text-xl font-semibold">
+                      {bmi.toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="whitespace-pre-line">
+                    <p className="text-sm">
+                      Your BMI suggests you&apos;re{" "}
+                      <span>
+                        {bmi < 18.5
+                          ? "underweight"
+                          : bmi < 24.9
+                          ? "normal weight"
+                          : bmi < 29.9
+                          ? "overweight"
+                          : "obese"}
+                      </span>
+                      . Your ideal weight is between{" "}
+                      {calculateIdealWeightRange(measures.height).join(
+                        "kg and "
+                      )}
+                      kg
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </header>
-      <img
-        className="mb-20"
-        src="./image-man-eating.webp"
-        alt=""
-        width={330}
-        height="auto"
-      />
-      <div className="mb-20">
-        <h2 className="mb-4 text-3xl font-bold tracking-tighter text-center">
-          What your BMI result means
-        </h2>
-        <p className="mb-10 text-center text-gray-500">
-          A BMI range of 18.5 to 24.9 is considered a &apos;healthy
-          weight&apos;. Mantaining a healthy weight may lower your chances of
-          experiencing health issues later on, such as obesity and type 2
-          diabetes. Aim for a nutritious diet with reducer fat and sugar
-          content, incorporating ample fruits and vegetables. Additionally,
-          strive for regular physical activity, ideally about 30 minutes daily
-          for five days a week.
-        </p>
-      </div>
-      <div className="mb-20 space-y-8">
-        {bodyText.map(({ title, description, src }) => (
-          <Health
-            key={title}
-            title={title}
-            description={description}
-            src={src}
-          />
-        ))}
-      </div>
-      <section className="mb-20">
-        <h2 className="mb-6 text-3xl font-bold tracking-tighter text-center">
-          Limitations of BMI
-        </h2>
-        <p className="mb-20 text-center text-gray-500">
-          Although BMI is often a practical indicator of healthy weight, it is
-          not suited for every person. Specific groups should carefully consider
-          their BMI outcomes, and in certain cases, the measurement may not be
-          beneficial to use.
-        </p>
-        <div className="space-y-6">
-          {boxesText.map(({ title, description, src }) => (
-            <Box
+      <main>
+        <img
+          className="mx-auto mb-20"
+          src="./image-man-eating.webp"
+          alt=""
+          width={430}
+          height="auto"
+        />
+        <section className="mb-20">
+          <h2 className="mb-4 text-3xl font-bold tracking-tighter text-center">
+            What your BMI result means
+          </h2>
+          <p className="mb-10 text-center text-gray-500">
+            A BMI range of 18.5 to 24.9 is considered a &apos;healthy
+            weight&apos;. Mantaining a healthy weight may lower your chances of
+            experiencing health issues later on, such as obesity and type 2
+            diabetes. Aim for a nutritious diet with reducer fat and sugar
+            content, incorporating ample fruits and vegetables. Additionally,
+            strive for regular physical activity, ideally about 30 minutes daily
+            for five days a week.
+          </p>
+        </section>
+        <div className="flex flex-col mb-20 md:flex-row">
+          {bodyText.map(({ title, description, src }) => (
+            <Health
               key={title}
               title={title}
               description={description}
@@ -318,7 +303,42 @@ export default function Home() {
             />
           ))}
         </div>
-      </section>
-    </main>
+        <section className="mb-20">
+          <h2 className="mb-6 text-3xl font-bold tracking-tighter text-center">
+            Limitations of BMI
+          </h2>
+          <p className="mb-20 text-center text-gray-500">
+            Although BMI is often a practical indicator of healthy weight, it is
+            not suited for every person. Specific groups should carefully
+            consider their BMI outcomes, and in certain cases, the measurement
+            may not be beneficial to use.
+          </p>
+          <div className="flex flex-col items-center justify-center mb-10 space-y-10">
+            {boxesText.map(({ title, description, src }) => (
+              <Box
+                key={title}
+                title={title}
+                description={description}
+                src={src}
+              />
+            ))}
+          </div>
+        </section>
+        <footer>
+          <div className="flex flex-col items-center justify-center mb-10 space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+            <Link
+              href="https://www.facuperezm.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"
+              aria-label="Developer's website"
+              title="Facundo Perez Montalvo"
+            >
+              <span>Created by Facundo Perez Montalvo</span>
+            </Link>
+          </div>
+        </footer>
+      </main>
+    </>
   );
 }
