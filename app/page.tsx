@@ -114,26 +114,28 @@ export default function Home(): React.ReactNode {
 
   return (
     <>
-      <header className="flex flex-col items-center justify-center py-2 mb-4 md:flex-row">
-        <div className="flex-1 mr-14 md:text-left md:flex md:flex-col">
-          <img
-            className="mx-auto mb-6 md:mx-0"
-            src="./logo.svg"
-            alt=""
-            width={50}
-            height={50}
-          />
-          <h1 className="mb-6 text-5xl font-bold tracking-tighter text-center md:text-left">
-            Body Mass Index Calculator
+      <nav className="mx-auto my-14 md:mx-0">
+        <img
+          className="mx-auto mb-6 md:mx-0"
+          src="./logo.svg"
+          alt=""
+          width={50}
+          height={50}
+        />
+      </nav>
+      <header className="flex flex-col py-2 mb-4 md:flex-row md:items-center">
+        <div className="flex-1 gap-4 mr-12 md:text-left md:flex md:flex-col">
+          <h1 className="text-5xl font-bold tracking-tighter text-center md:text-left">
+            Body Mass <br /> Index Calculator
           </h1>
-          <p className="mb-20 text-center text-gray-600 md:text-left">
+          <p className="text-center text-gray-600 md:text-left">
             Better understand your weight in relation to your height using our
             body mass index calculator. While BMI is not the sole determinant of
             healthy weight, it offers a valuable starting point to evaluate your
             overall health and well-being.
           </p>
         </div>
-        <Card>
+        <Card className="max-w-prose">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-900">
               Enter your details below
@@ -246,8 +248,8 @@ export default function Home(): React.ReactNode {
                       {bmi.toFixed(1)}
                     </span>
                   </div>
-                  <div className="whitespace-pre-line">
-                    <p className="text-sm">
+                  <div>
+                    <p className="text-sm overflow-clip">
                       Your BMI suggests you&apos;re{" "}
                       <span>
                         {bmi < 18.5
@@ -272,26 +274,28 @@ export default function Home(): React.ReactNode {
         </Card>
       </header>
       <main>
-        <img
-          className="mx-auto mb-20"
-          src="./image-man-eating.webp"
-          alt=""
-          width={430}
-          height="auto"
-        />
-        <section className="mb-20">
-          <h2 className="mb-4 text-3xl font-bold tracking-tighter text-center">
-            What your BMI result means
-          </h2>
-          <p className="mb-10 text-center text-gray-500">
-            A BMI range of 18.5 to 24.9 is considered a &apos;healthy
-            weight&apos;. Mantaining a healthy weight may lower your chances of
-            experiencing health issues later on, such as obesity and type 2
-            diabetes. Aim for a nutritious diet with reducer fat and sugar
-            content, incorporating ample fruits and vegetables. Additionally,
-            strive for regular physical activity, ideally about 30 minutes daily
-            for five days a week.
-          </p>
+        <section className="flex items-center gap-6 mb-20">
+          <img
+            className="mx-auto mb-20"
+            src="./image-man-eating.webp"
+            alt=""
+            width={430}
+            height="auto"
+          />
+          <div className="text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tighter text-center">
+              What your BMI result means
+            </h2>
+            <p className="mb-10 text-center text-gray-500">
+              A BMI range of 18.5 to 24.9 is considered a &apos;healthy
+              weight&apos;. Mantaining a healthy weight may lower your chances
+              of experiencing health issues later on, such as obesity and type 2
+              diabetes. Aim for a nutritious diet with reducer fat and sugar
+              content, incorporating ample fruits and vegetables. Additionally,
+              strive for regular physical activity, ideally about 30 minutes
+              daily for five days a week.
+            </p>
+          </div>
         </section>
         <div className="flex flex-col mb-20 md:flex-row">
           {bodyText.map(({ title, description, src }) => (
