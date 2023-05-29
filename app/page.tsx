@@ -317,7 +317,7 @@ export default function Home(): React.ReactNode {
             consider their BMI outcomes, and in certain cases, the measurement
             may not be beneficial to use.
           </p>
-          <div className="flex flex-col items-center justify-center mb-10 space-y-10">
+          <div className="flex flex-wrap justify-center gap-4 mb-10 ">
             {boxesText.map(({ title, description, src }) => (
               <Box
                 key={title}
