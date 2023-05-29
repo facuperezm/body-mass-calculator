@@ -297,7 +297,7 @@ export default function Home(): React.ReactNode {
             </p>
           </div>
         </section>
-        <div className="flex flex-col mb-20 md:flex-row">
+        <article className="flex flex-col mb-20 md:flex-row">
           {bodyText.map(({ title, description, src }) => (
             <Health
               key={title}
@@ -306,7 +306,7 @@ export default function Home(): React.ReactNode {
               src={src}
             />
           ))}
-        </div>
+        </article>
         <section className="mb-20">
           <h2 className="mb-6 text-3xl font-bold tracking-tighter text-center">
             Limitations of BMI
