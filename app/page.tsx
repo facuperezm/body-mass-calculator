@@ -123,7 +123,7 @@ export default function Home(): React.ReactNode {
           height={50}
         />
       </nav>
-      <header className="flex flex-col py-2 mb-4 md:flex-row md:items-center">
+      <header className="flex flex-col py-2 mb-10 md:flex-row md:items-center">
         <div className="flex-1 gap-4 mr-12 md:text-left md:flex md:flex-col">
           <h1 className="text-5xl font-bold tracking-tighter text-center md:text-left">
             Body Mass <br /> Index Calculator
@@ -274,7 +274,7 @@ export default function Home(): React.ReactNode {
         </Card>
       </header>
       <main>
-        <section className="flex items-center gap-6 mb-20">
+        <section className="flex items-center gap-6 mb-10">
           <img
             className="mx-auto mb-20"
             src="./image-man-eating.webp"
@@ -286,7 +286,7 @@ export default function Home(): React.ReactNode {
             <h2 className="mb-4 text-3xl font-bold tracking-tighter text-center">
               What your BMI result means
             </h2>
-            <p className="mb-10 text-center text-gray-500">
+            <p className="text-center text-gray-500">
               A BMI range of 18.5 to 24.9 is considered a &apos;healthy
               weight&apos;. Mantaining a healthy weight may lower your chances
               of experiencing health issues later on, such as obesity and type 2
