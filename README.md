@@ -10,7 +10,7 @@ Body Mass Index Calculator is a simple web app that calculates your BMI based on
 
 ## Tech Stack
 
-**Client:** React, Next.js, Tailwind CSS
+**Client:** React, Next.js, Tailwind CSS, Shadcn UI
 
 **Deploy:** Vercel
 
@@ -25,6 +25,7 @@ Body Mass Index Calculator is a simple web app that calculates your BMI based on
 
 - [Tailwind CSS Docs](https://tailwindcss.com/docs/installation)
 - [Next.js Docs](https://nextjs.org/docs/getting-started)
+- [Shadcn UI](https://ui.shadcn.com/)
 
 ## Author
 
